@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ### Rodar demo
 
 ```
-python src/yolov5/detect.py --weights src/yolov5/runs/train/exp/weights/best.onnx --source 0 --project results/
+python src/detect.py --weights src/best.onnx --source 0 --project results/
 ```
 
 **Aperte Q para sair!**
