@@ -161,3 +161,4 @@ cython_debug/
 
 # Dataset
 src/dataset/
+results/
