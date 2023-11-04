@@ -1,5 +1,52 @@
 # distracted-driving
 
+## Setup do ambiente
+
+```
+python -m venv env
+```
+
+### Linux
+
+```
+source env/bin/activate
+```
+
+### Windows
+
+```
+env/Scripts/activate
+```
+
+### Instalando dependências
+
+```
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+### Rodar demo
+
+```
+python src/yolov5/detect.py --weights src/yolov5/runs/train/exp/weights/best.onnx --source 0 --project results/
+```
+
+**Aperte Q para sair!**
+
+## Benchmarks
+
+Ver quais aplicativos e bibliotecas existem com o mesmo proposito ou proposito parecido.
+
+## Compromissos para 07/11
+
+- Encontrar e rodar um demo com algum modelo existente.
+- Fechar quais são os tipos de distração que serão observadas.
+
+
+## Planilha dos grupos
+
+[Clique Aqui](https://docs.google.com/spreadsheets/d/1881UvEfp4QGNdXIWUzFsebN4hCH7xh6pZpvL-mi7xM4/edit#gid=0)
+
+
 ## Referências
 
 Sam Ansari. (2022). [How to Train YOLO Model to Detect Distracted Drivers](https://ansarisam.medium.com/how-to-train-yolo-v5-model-to-detect-distracted-drivers-ac62b2d44a27).
