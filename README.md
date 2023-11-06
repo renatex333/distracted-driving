@@ -37,7 +37,7 @@ Ver quais aplicativos e bibliotecas existem com o mesmo proposito ou proposito p
 ### Rodar demo
 
 ```
-python src/detect.py --weights src/weights/best.onnx --source 0 --project results/
+python src/detect.py --weights src/weights/medium/best.onnx --source 0 --project results/
 ```
 
 **Aperte Q para sair!**
