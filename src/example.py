@@ -10,25 +10,37 @@ WIN = 'Rave Maluca'
 
 def main() -> int:
 
-    device = torch.device("cpu")
+    ### EXEMPLO DE USO DE PYTORCH ###
     # Model
-    model = torch.hub.load('ultralytics/yolov5', 'custom', 'yolov5/runs/train/exp/weights/best.onnx', trust_repo=True)
-    # model = torch.hub.load('ultralytics/yolov5', 'custom', 'yolov5/runs/train/exp/weights/best.torchscript', autoshape=False) 
+    model = torch.jit.load("src/best.torchscript", map_location="cpu")
+    im = torch.empty((1, 3, 640, 640), device="cpu")
 
     # Images
-    img_path = './teste1.jpg'  # or file, Path, PIL, OpenCV, numpy, list
+    # im = 'src/teste1.jpg'  # or file, Path, PIL, OpenCV, numpy, list
 
-    # _image = cv.imread(img_path)
-    # _image = np.array(_image).astype(np.float32) 
-    # image = torch.from_numpy(_image)
-    # image = image[np.newaxis, :]
-    # image = image.permute(0, 3, 1, 2) 
+    # image = cv.imread(im)
+
+    # Convert BGR image to RGB image 
+    # image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+
+    # print(image.shape)
+    
+    # # Define a transform to convert 
+    # # the image to torch tensor 
+    # transform = transforms.Compose([ 
+    #     transforms.ToTensor() 
+    # ]) 
+    
+    # # Convert the image to Torch tensor 
+    # tensor = transform(image)
+    # print(tensor.shape)
     # Inference
-    results = model(img_path)
+    results = model(im)
 
     # Results
-    results.print()  # or .show(), .save(), .crop(), .pandas(), etc.
+    results.print()  # .print(), .show(), .save(), .crop(), .pandas(), etc.
 
+    ### EXEMPLO DADO EM AULA ###
     # capture = cv.VideoCapture(CAM)
     # delay = round(1000 / FPS)
     # cv.namedWindow(WIN)
