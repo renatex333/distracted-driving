@@ -161,4 +161,10 @@ cython_debug/
 
 # Dataset
 src/dataset/
+
+# Results folder
 results/
+
+# YoloV5 folder
+src/yolov5/
+yolov5/
