@@ -24,13 +24,6 @@ env/Scripts/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-### Rodar demo
-
-```
-python src/detect.py --weights src/best.onnx --source 0 --project results/
-```
-
-**Aperte Q para sair!**
 
 ## Benchmarks
 
@@ -41,6 +34,24 @@ Ver quais aplicativos e bibliotecas existem com o mesmo proposito ou proposito p
 - Encontrar e rodar um demo com algum modelo existente.
 - Fechar quais são os tipos de distração que serão observadas.
 
+### Rodar demo
+
+```
+python src/detect.py --weights src/weights/best.onnx --source 0 --project results/
+```
+
+**Aperte Q para sair!**
+
+### Tipos de distrações que serão observadas
+
+- Mexer no celular
+- Falar no celular
+- Mexer no rádio
+- Se alimentar
+- Tentar alcançar algo no banco de trás
+- Olhos fechados
+- Bocejo
+- Cabeça caída / Indicativo de que dormiu na direção
 
 ## Planilha dos grupos
 
