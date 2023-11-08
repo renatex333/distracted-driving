@@ -40,6 +40,14 @@ Ver quais aplicativos e bibliotecas existem com o mesmo proposito ou proposito p
 python src/detect.py --weights src/weights/medium/best.onnx --source 0 --project results/
 ```
 
+## Rodar demo Flask
+
+```
+cd app/
+export FLASK_APP=distracted-driving.py
+flask run
+```
+
 **Aperte Q para sair!**
 
 ### Tipos de distrações que serão observadas
