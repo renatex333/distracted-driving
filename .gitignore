@@ -160,11 +160,10 @@ cython_debug/
 #.idea/
 
 # Dataset
-src/dataset/
+dataset/
 
 # Results folder
 results/
 
 # YoloV5 folder
-src/yolov5/
 yolov5/
