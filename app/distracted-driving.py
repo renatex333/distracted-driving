@@ -87,13 +87,12 @@ def process_frame():
                 label = f'{names[c]} {confidence:.2f}'
                 # s += f'{label}, '
                 boxes[label] = (confidence, [float(p) for p in xyxy])
-            print(boxes)
+            return jsonify({'box':boxes})
 
     # Example box coordinates (replace with actual model prediction)
-    box = {'x': 100, 'y': 100, 'width': 50, 'height': 50}
+    nothing = {'x': 100, 'y': 100, 'width': 50, 'height': 50}
 
-    return jsonify({'box': box})
-
+    return jsonify({'nothing': nothing})
 
 if __name__ == '__main__':
     app.run(debug=True)
