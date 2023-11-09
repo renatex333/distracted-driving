@@ -12,8 +12,8 @@ app = Flask(__name__)
 # Initialize the model
 model = None
 names = None
+weights = "app/src/weights/medium/best.onnx"
 img_size = (640, 640)
-
 
 def load_model(weights, imgsz=(640, 640), device="cpu"):
     """
@@ -37,7 +37,8 @@ def load_model(weights, imgsz=(640, 640), device="cpu"):
     return 0
 
 # Call the function to load the model when the server starts
-load_model(weights="src/weights/medium/best.onnx", imgsz=img_size)
+with app.app_context():
+    load_model(weights=weights, imgsz=img_size)
 
 @app.route("/")
 def index():
@@ -76,15 +77,15 @@ def process_frame():
             det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], img0.shape).round()
 
             # Print results
-            for c in det[:, 5].unique():
-                n = (det[:, 5] == c).sum()  # detections per class
-                s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+            # for c in det[:, 5].unique():
+            #     n = (det[:, 5] == c).sum()  # detections per class
+            #     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
 
             for *xyxy, conf, cls in reversed(det):
                 c = int(cls)  # integer class
                 confidence = float(conf)
                 label = f'{names[c]} {confidence:.2f}'
-                s += f'{label}, '
+                # s += f'{label}, '
                 boxes[label] = (confidence, [float(p) for p in xyxy])
             print(boxes)
 

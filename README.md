@@ -44,7 +44,7 @@ python src/detect.py --weights src/weights/medium/best.onnx --source 0 --project
 
 ```
 cd app/
-export FLASK_APP=distracted-driving.py
+export FLASK_APP=app/distracted-driving.py
 flask run
 ```
 
