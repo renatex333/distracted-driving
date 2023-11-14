@@ -43,7 +43,6 @@ python src/detect.py --weights src/weights/medium/best.onnx --source 0 --project
 ## Rodar demo Flask
 
 ```
-cd app/
 export FLASK_APP=app/distracted-driving.py
 flask run
 ```
@@ -52,14 +51,14 @@ flask run
 
 ### Tipos de distrações que serão observadas
 
-- Mexer no celular
-- Falar no celular
-- Mexer no rádio
-- Se alimentar
-- Tentar alcançar algo no banco de trás
-- Olhos fechados
-- Bocejo
-- Cabeça caída / Indicativo de que dormiu na direção
+- Olhos fechados: alarme de alta intensidade
+- Cabeça caída / Indicativo de que dormiu na direção: alarme de baixa intensidade 
+- Mexer no celular: aviso sonoro intermitente
+- Falar no celular: aviso sonoro intermitente
+- Tentar alcançar algo no banco de trás: aviso sonoro único, mas aumenta se continuar tentando alcançar
+- Mexer no rádio: aviso sonoro único
+- Bocejo: aviso sonoro distinto dos outros, para ser associado com uma pausa para descanso. Uma indicação em texto também pode ser fornecida
+- Se alimentar: alerta visual, piscar tela
 
 ## Planilha dos grupos
 
