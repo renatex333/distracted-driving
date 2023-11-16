@@ -65,6 +65,8 @@ Sam Ansari. (2022). [How to Train YOLO Model to Detect Distracted Drivers](https
 
 Yacine Rouizi. (2023). [Real-time Object Tracking with OpenCV and YOLOv8 in Python](https://thepythoncode.com/article/real-time-object-tracking-with-yolov8-opencv).
 
+Ultralytics. (2023). [YoloV8 Docs](https://docs.ultralytics.com/).
+
 [Distracted Driving Images Dataset 01](https://universe.roboflow.com/search?q=distracted%20driving).
 
 [Distracted Driving Images Dataset 02](https://universe.roboflow.com/sebastin-ezequiel-galeano/prueba-otro-dataset).
