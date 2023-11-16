@@ -15,7 +15,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
 // Function to send the image to the backend
 function sendFrame() {
-    context.drawImage(video, 0, 0, 640, 640);
+    context.drawImage(video, 0, 0, 640, 480);
     canvas.toBlob(function (blob) {
         const data = new FormData();
         data.append("frame", blob);
@@ -30,26 +30,16 @@ function sendFrame() {
     });
 }
 
-// {
-//     "d3 - Eyes Open 0.37": [
-//         0.3675169348716736,
-//         [
-//             304,
-//             191,
-//             510,
-//             471
-//         ]
-//     ]
-// }
-
 // Function to draw the box
 function drawBox(box) {
+    console.log(box);
     const firstKey = Object.keys(box)[0];
     const cord = box[firstKey][1];
     const [x1, y1, x2, y2] = cord;
     context.beginPath();
     context.rect(x1, y1, x2 - x1, y2 - y1);
     context.strokeStyle = "red";
+    context.lineWidth = 5;
     context.stroke();
     console.log(box);
 }

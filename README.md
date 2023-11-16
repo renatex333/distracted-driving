@@ -34,12 +34,6 @@ Ver quais aplicativos e bibliotecas existem com o mesmo proposito ou proposito p
 - Encontrar e rodar um demo com algum modelo existente.
 - Fechar quais são os tipos de distração que serão observadas.
 
-### Rodar demo
-
-```
-python src/detect.py --weights src/weights/medium/best.onnx --source 0 --project results/
-```
-
 ## Rodar demo Flask
 
 ```
@@ -68,6 +62,8 @@ flask run
 ## Referências
 
 Sam Ansari. (2022). [How to Train YOLO Model to Detect Distracted Drivers](https://ansarisam.medium.com/how-to-train-yolo-v5-model-to-detect-distracted-drivers-ac62b2d44a27).
+
+Yacine Rouizi. (2023). [Real-time Object Tracking with OpenCV and YOLOv8 in Python](https://thepythoncode.com/article/real-time-object-tracking-with-yolov8-opencv).
 
 [Distracted Driving Images Dataset 01](https://universe.roboflow.com/search?q=distracted%20driving).
 
