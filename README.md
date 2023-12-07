@@ -94,6 +94,8 @@ Vercel. [Flask Hello World](https://vercel.com/templates/python/flask-hello-worl
 
 Vercel. [Django Hello World](https://vercel.com/templates/python/django-hello-world).
 
+Mozilla, MDN Web Docs. (2023). [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
+
 [Distracted Driving Images Dataset 01](https://universe.roboflow.com/search?q=distracted%20driving).
 
 [Distracted Driving Images Dataset 02](https://universe.roboflow.com/sebastin-ezequiel-galeano/prueba-otro-dataset).
