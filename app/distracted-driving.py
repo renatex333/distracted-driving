@@ -30,21 +30,22 @@ def process_frame():
 
     Attributes of "boxes" (ultralytics.utils.results.Boxes):
         data (torch.Tensor): The raw bboxes tensor (alias for `boxes`).
+        The box coordinates are in the xyxy format.
     """
-    boxes_data = detections.boxes.data.tolist()
     classes_names = detections.names
     boxes = {}
-    for data in boxes_data:
-        confidence = data[4]
-        if float(confidence) < CONFIDENCE_THRESHOLD:
+    for box in detections.boxes:
+        confidence = float(box.conf)
+        if confidence < CONFIDENCE_THRESHOLD:
             continue
-        class_id = int(data[5])
+        class_id = int(box.cls)
         class_name = classes_names[class_id]
-        xmin, ymin, xmax, ymax = int(data[0]), int(data[1]), int(data[2]), int(data[3])
-        boxes[class_name] = (confidence, [xmin, ymin, xmax, ymax])
+        coords = box.xywhn[0].numpy().tolist() # xywh format
+        boxes[class_name] = (confidence, coords)
 
     if len(boxes) == 0:
         return jsonify({'boxes': "None"})
+    print(boxes)
     return jsonify({'boxes': boxes})
 
 if __name__ == '__main__':
