@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>Distracted Driving</title>
-    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/static/distracted-driving.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/static/distracted-driving.css" />
     <script defer src="/static/distracted-driving.js"></script>
   </head>
   <body>
-    <video id="video" width="640" height="640" autoplay="true"></video>
-    <canvas id="canvas" width="640" height="640"></canvas>
+    <div id="container">
+      <video id="video" playsinline autoplay></video>
+      <canvas id="canvas" width="640" height="640"></canvas>
+      <div id="data"></div>
+    </div>
   </body>
 </html>

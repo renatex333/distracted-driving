@@ -1,16 +1,22 @@
-const FPS = 30;
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const context = canvas.getContext("2d");
+const FPS = 10;
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const dataDiv = document.getElementById('data');
+const context = canvas.getContext('2d');
 
 // Get access to the camera
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices
-        .getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: true })
         .then(function (stream) {
             video.srcObject = stream;
             video.play();
-        });
+            // video.onloadedmetadata = () => {
+            //     canvas.width = video.videoWidth;
+            //     canvas.height = video.videoHeight;
+            //     draw();
+            // };
+        })
+        .catch(err => console.error("Error accessing camera: ", err));
 }
 
 // Function to send the image to the backend
@@ -23,10 +29,15 @@ function sendFrame() {
         fetch("/process", { method: "POST", body: data })
             .then((response) => response.json())
             .then((data) => {
-                if(data.box){
-                    drawBox(data.box);
+                if(data.boxes){
+                    console.log(data.boxes);
+                    // drawBox(data.boxes);
+                    // dataDiv.innerHTML = printBox(data.boxes);
+                    dataDiv.innerHTML = JSON.stringify(data.boxes);
+                    // boxes[class_name] = (confidence, [xmin, ymin, xmax, ymax])
                 }
-            });
+            })
+            .catch(err => console.error("Error fetching data: ", err));
     });
 }
 

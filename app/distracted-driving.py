@@ -7,71 +7,45 @@ app = Flask(__name__)
 
 CONFIDENCE_THRESHOLD = 0.7
 
-# def main() -> int:
-#     capture = cv2.VideoCapture(CAM)
-#     delay = round(1000 / FPS)
-#     cv2.namedWindow(WIN)
-#     while cv2.getWindowProperty(WIN, cv2.WND_PROP_VISIBLE):
-#         success, frame = capture.read()
-
-#         if success:
-#             output = frame.copy()
-#             boxes = process(frame)
-#             for box in boxes:
-#                 cv2.rectangle(output, (box['x_min'], box['y_min']), (box['x_max'], box['y_max']), GREEN, 2)
-#             cv2.imshow(WIN, output)
-
-#         if cv2.waitKey(delay) == ord('q'):
-#             break
-
-#     capture.release()
-#     cv2.destroyWindow(WIN)
-#     return 0
-
-# def process(frame):
-
-#     detections = model(frame)[0]
-#     boxes = []
-#     for data in detections.boxes.data.tolist():
-#         confidence = data[4]
-#         if float(confidence) < CONFIDENCE_THRESHOLD:
-#             continue
-
-#         xmin, ymin, xmax, ymax = int(data[0]), int(data[1]), int(data[2]), int(data[3])
-#         # class_id = int(data[5])
-#         # cv2.rectangle(output, (xmin, ymin) , (xmax, ymax), GREEN, 2)
-#         # cv2.putText(output, str(class_id), (xmin, ymin - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, GREEN, 2)
-#         boxes.append({'x_min': xmin, 'y_min': ymin, 'x_max': xmax, 'y_max': ymax})
-
-#     return boxes
-
 # Call the function to load the model when the server starts
 with app.app_context():
     model = YOLO("app/models/distracted-driving.onnx")
 
+# Set up the main route
 @app.route("/")
 def index():
     return render_template('distracted-driving.html')
 
+# Set up the process route, which will receive requests containing an image
 @app.route('/process', methods=['POST'])
 def process_frame():
     file = request.files['frame'].read()
     nparr = np.fromstring(file, np.uint8)
     im = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    # im = im.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
     detections = model(im)[0]
+    """
+    Attributes of "detections" (ultralytics.engine.results.Results):
+        boxes (Boxes, optional): A Boxes object containing the detection bounding boxes.
+        names (dict): A dictionary of class names.
+
+    Attributes of "boxes" (ultralytics.utils.results.Boxes):
+        data (torch.Tensor): The raw bboxes tensor (alias for `boxes`).
+    """
+    boxes_data = detections.boxes.data.tolist()
+    classes_names = detections.names
     boxes = {}
-    for data in detections.boxes.data.tolist():
+    for data in boxes_data:
         confidence = data[4]
         if float(confidence) < CONFIDENCE_THRESHOLD:
             continue
         class_id = int(data[5])
+        class_name = classes_names[class_id]
         xmin, ymin, xmax, ymax = int(data[0]), int(data[1]), int(data[2]), int(data[3])
-        boxes[f"label_{class_id}"] = (confidence, [xmin, ymin, xmax, ymax])
+        boxes[class_name] = (confidence, [xmin, ymin, xmax, ymax])
 
     if len(boxes) == 0:
-        return jsonify({'box': None})
-    return jsonify({'box': boxes})
+        return jsonify({'boxes': "None"})
+    return jsonify({'boxes': boxes})
 
 if __name__ == '__main__':
     app.run(debug=True)
