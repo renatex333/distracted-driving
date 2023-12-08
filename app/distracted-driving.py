@@ -1,98 +1,52 @@
 from flask import Flask, request, jsonify, render_template
-import numpy as np
+from ultralytics import YOLO
 import cv2
-import torch
-from src.utils.torch_utils import select_device
-from src.utils.general import check_img_size, non_max_suppression, scale_boxes, Profile
-from src.models.common import DetectMultiBackend
-from src.utils.augmentations import letterbox
+import numpy as np
 
 app = Flask(__name__)
 
-# Initialize the model
-model = None
-names = None
-weights = "app/src/weights/medium/best.onnx"
-img_size = (640, 640)
-
-def load_model(weights, imgsz=(640, 640), device="cpu"):
-    """
-    weights => model path
-    imgsz => image size, default is 640x640
-    device => device to run inference, default is cpu but you can use cuda device
-    """
-    global model
-    global names
-
-    # Load model
-    device = select_device(device)
-    model = DetectMultiBackend(weights, device=device)
-    imgsz = check_img_size(imgsz)  # check image size
-
-    # Run inference
-    model.warmup(imgsz=(1, 3, *imgsz))  # warmup
-    names = model.names
-
-    print("Model loaded successfully")
-    return 0
+CONFIDENCE_THRESHOLD = 0.7
 
 # Call the function to load the model when the server starts
 with app.app_context():
-    load_model(weights=weights, imgsz=img_size)
+    model = YOLO("app/models/distracted-driving.onnx")
 
+# Set up the main route
 @app.route("/")
 def index():
     return render_template('distracted-driving.html')
 
+# Set up the process route, which will receive requests containing an image
 @app.route('/process', methods=['POST'])
 def process_frame():
-    dt = (Profile(), Profile(), Profile())
     file = request.files['frame'].read()
     nparr = np.fromstring(file, np.uint8)
-    img0 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    im = letterbox(img0, img_size)[0]  # padded resize
-    im = im.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
-    im = np.ascontiguousarray(im)  # contiguous
+    im = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    detections = model(im)[0]
+    """
+    Attributes of "detections" (ultralytics.engine.results.Results):
+        boxes (Boxes, optional): A Boxes object containing the detection bounding boxes.
+        names (dict): A dictionary of class names.
 
-    # Process the image and find the box coordinates
-    with dt[0]:
-        im = torch.from_numpy(im).to(model.device).float()
-        im /= 255  # 0 - 255 to 0.0 - 1.0
-        if len(im.shape) == 3:
-            im = im[None]  # expand for batch dim
-
-    # Inference
-    with dt[1]:
-        pred = model(im, augment=False, visualize=False)
-
-    # NMS
-    with dt[2]:
-        pred = non_max_suppression(pred, max_det=1000)
-
+    Attributes of "boxes" (ultralytics.utils.results.Boxes):
+        data (torch.Tensor): The raw bboxes tensor (alias for `boxes`).
+        The box coordinates are in the xyxy format.
+    """
+    classes_names = detections.names
     boxes = {}
-    # Process predictions
-    for i, det in enumerate(pred):  # per image
-        if len(det):
-            # Rescale boxes from img_size to im0 size
-            det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], img0.shape).round()
+    for box in detections.boxes:
+        confidence = float(box.conf)
+        if confidence < CONFIDENCE_THRESHOLD:
+            continue
+        class_id = int(box.cls)
+        class_name = classes_names[class_id]
+        coords = box.xywhn[0].numpy().tolist() # xywh format
+        boxes[class_name] = (confidence, coords)
 
-            # Print results
-            # for c in det[:, 5].unique():
-            #     n = (det[:, 5] == c).sum()  # detections per class
-            #     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
-
-            for *xyxy, conf, cls in reversed(det):
-                c = int(cls)  # integer class
-                confidence = float(conf)
-                label = f'{names[c]} {confidence:.2f}'
-                # s += f'{label}, '
-                boxes[label] = (confidence, [float(p) for p in xyxy])
-            return jsonify({'box':boxes})
-
-    # Example box coordinates (replace with actual model prediction)
-    nothing = {'x': 100, 'y': 100, 'width': 50, 'height': 50}
-
-    return jsonify({'nothing': nothing})
+    if len(boxes) == 0:
+        return jsonify({'boxes': "None"})
+    print(boxes)
+    return jsonify({'boxes': boxes})
 
 if __name__ == '__main__':
     app.run(debug=True)

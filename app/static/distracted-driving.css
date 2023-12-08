@@ -1,11 +1,30 @@
-html {
-    height: 100%;
+body {
+    background-color: #14110f; /* others: yellow #ffb529, gray #ada9aa, red #af472a */
+    color: #ada9aa;
+    font-family: DejaVu Sans Mono, monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
-body {
-    height: 100%;
-    margin: 0;
+#container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#video, #canvas {
+    width: 640px;
+    height: 480px;
+}
+
+#driver-alerts h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+#alerts {
+    font-size: 1em;
+    margin: 0;
 }
