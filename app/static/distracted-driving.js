@@ -17,7 +17,7 @@ const audioMapping = {
 
 const blinkMapping = {
     'c4 - Drinking': 'blink',
-    'd3 - Eyes Open': 'blink', // Usado apenas para teste de piscar
+    // 'd3 - Eyes Open': 'blink', // Usado apenas para teste de piscar
 }
 
 let isBlinking = false;
