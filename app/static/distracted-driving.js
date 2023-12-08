@@ -4,6 +4,18 @@ const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 const alerts = document.getElementById('alerts');
 
+// O que está comentado ainda precisa de um áudio específico
+const audioMapping = {
+    'c1 - Texting': 'audio-intermitente',
+    'c2 - Talking on the phone': 'audio-intermitente',
+    // 'c3 - Operating the Radio': '',
+    // 'c5 - Reaching Behind': 'audio-intermitente',
+    'd0 - Eyes Closed': 'audio-muito-intenso',
+    // 'd1 - Yawning': 'audio-descanso',
+    'd2 - Nodding Off': 'audio-muito-intenso',
+    'd3 - Eyes Open': 'audio-intermitente', // Apenas para teste, em produção não deve existir
+};
+
 // Get access to the camera and play the video
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -30,6 +42,7 @@ function sendFrame() {
             // Contents of response data: boxes[class_name] = (confidence, [x, y, w, h])
             .then((data) => {
                 if(data.boxes){
+                    // console.log(data.boxes);
                     var bestConfidence = 0;
                     var bestConfidenceCoords = [0, 0, 0, 0];
                     alerts.innerHTML = '';
@@ -46,6 +59,7 @@ function sendFrame() {
                     });
                     
                     drawBox(bestConfidenceCoords);
+                    playAlertSound(data.boxes);
                 }
             })
             .catch(err => console.error("Error fetching data: ", err));
@@ -59,6 +73,25 @@ function drawBox(coords) {
     context.strokeRect(coords[0] * canvas.width, coords[1] * canvas.height, coords[2] * canvas.width, coords[3] * canvas.height);
 }
 
+function playAlertSound(boxes) {
+    const distractions = Object.keys(boxes);
+
+    pauseAllAudio();
+
+    distractions.forEach((distraction) => {
+        const audioId = audioMapping[distraction];
+        if (!audioId) return;
+        document.getElementById(audioId).play();
+    })
+}
+
+function pauseAllAudio() {
+    const audioElements = document.querySelectorAll("audio");
+    audioElements.forEach((audioElement) => {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+    })
+}
 
 // Send frames every second
 setInterval(sendFrame, 1000 / FPS);
