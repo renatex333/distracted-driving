@@ -1,6 +1,6 @@
 # distracted-driving
 
-Projeto por: Pedro Altobelli, Renato Laffranchi e Vinicius Moraes
+Projeto por: Pedro Altobelli, Renato Laffranchi e Vinicius Morales
 
 ## Objetivo do Projeto
 
