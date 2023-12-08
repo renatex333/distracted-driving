@@ -4,17 +4,23 @@ const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 const alerts = document.getElementById('alerts');
 
-// O que está comentado ainda precisa de um áudio específico
 const audioMapping = {
     'c1 - Texting': 'audio-intermitente',
     'c2 - Talking on the phone': 'audio-intermitente',
-    // 'c3 - Operating the Radio': '',
-    // 'c5 - Reaching Behind': 'audio-intermitente',
+    'c3 - Operating the Radio': 'audio-unico',
+    'c5 - Reaching Behind': 'audio-intermitente',
     'd0 - Eyes Closed': 'audio-muito-intenso',
-    // 'd1 - Yawning': 'audio-descanso',
+    'd1 - Yawning': 'audio-descanso',
     'd2 - Nodding Off': 'audio-muito-intenso',
-    'd3 - Eyes Open': 'audio-intermitente', // Apenas para teste, em produção não deve existir
+    // 'd3 - Eyes Open': 'audio-descanso', // Usado apenas para teste dos áudios
 };
+
+const blinkMapping = {
+    'c4 - Drinking': 'blink',
+    'd3 - Eyes Open': 'blink', // Usado apenas para teste de piscar
+}
+
+let isBlinking = false;
 
 // Get access to the camera and play the video
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -39,27 +45,30 @@ function sendFrame() {
 
         fetch("/process", { method: "POST", body: data })
             .then((response) => response.json())
-            // Contents of response data: boxes[class_name] = (confidence, [x, y, w, h])
             .then((data) => {
-                if(data.boxes){
-                    // console.log(data.boxes);
-                    var bestConfidence = 0;
-                    var bestConfidenceCoords = [0, 0, 0, 0];
+                if (data.boxes) {
+                    const distraction = Object.keys(data.boxes)[0];
+                    let bestConfidence = 0;
+                    let bestConfidenceCoords = [0, 0, 0, 0];
                     alerts.innerHTML = '';
-                    Object.keys(data.boxes).forEach(function(key) {
-                        var value = data.boxes[key];
-                        if(value[0] > bestConfidence){
+                    Object.keys(data.boxes).forEach(function (key) {
+                        let value = data.boxes[key];
+                        if (value[0] > bestConfidence) {
                             bestConfidence = value[0];
                             bestConfidenceCoords = value[1];
                         }
-                        var coords = value[1];
+                        let coords = value[1];
                         const newAlert = document.createElement("p");
                         newAlert.innerHTML = key + ": " + value[0] + "<br>" + "x: " + coords[0] + "<br>" + "y: " + coords[1] + "<br>" + "w: " + coords[2] + "<br>" + "h: " + coords[3] + "<br>";
                         alerts.appendChild(newAlert);
                     });
-                    
+
                     drawBox(bestConfidenceCoords);
-                    playAlertSound(data.boxes);
+                    playAlertSound(distraction);
+
+                    if (distraction in blinkMapping) {
+                        blinkScreen();
+                    }
                 }
             })
             .catch(err => console.error("Error fetching data: ", err));
@@ -73,16 +82,12 @@ function drawBox(coords) {
     context.strokeRect(coords[0] * canvas.width, coords[1] * canvas.height, coords[2] * canvas.width, coords[3] * canvas.height);
 }
 
-function playAlertSound(boxes) {
-    const distractions = Object.keys(boxes);
+function playAlertSound(distraction) {
+    const audioId = audioMapping[distraction];
 
-    pauseAllAudio();
-
-    distractions.forEach((distraction) => {
-        const audioId = audioMapping[distraction];
-        if (!audioId) return;
+    if (audioId) {
         document.getElementById(audioId).play();
-    })
+    }
 }
 
 function pauseAllAudio() {
@@ -91,6 +96,20 @@ function pauseAllAudio() {
         audioElement.pause();
         audioElement.currentTime = 0;
     })
+}
+
+function blinkScreen() {
+    if (!isBlinking) {
+        isBlinking = true;
+        const originalBackgroundColor = document.body.style.backgroundColor;
+
+        document.body.style.backgroundColor = 'white';
+
+        setTimeout(() => {
+            document.body.style.backgroundColor = originalBackgroundColor;
+            isBlinking = false;
+        }, 200);
+    }
 }
 
 // Send frames every second
