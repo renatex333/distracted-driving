@@ -1,4 +1,4 @@
-const FPS = 5;
+const FPS = 60;
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
@@ -46,7 +46,7 @@ function sendFrame() {
         fetch("/process", { method: "POST", body: data })
             .then((response) => response.json())
             .then((data) => {
-                if (data.boxes) {
+                if (data.boxes !== "None") {
                     const distraction = Object.keys(data.boxes)[0];
                     let bestConfidence = 0;
                     let bestConfidenceCoords = [0, 0, 0, 0];
@@ -113,4 +113,4 @@ function blinkScreen() {
 }
 
 // Send frames every second
-setInterval(sendFrame, 1000 / FPS);
+setInterval(sendFrame, Math.floor(1000 / FPS));
