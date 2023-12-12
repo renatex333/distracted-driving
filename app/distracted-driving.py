@@ -10,6 +10,7 @@ CONFIDENCE_THRESHOLD = 0.7
 # Call the function to load the model when the server starts
 with app.app_context():
     model = YOLO("app/models/distracted-driving.onnx")
+    # model = YOLO("app/models/distracted-driving.pt")
 
 # Set up the main route
 @app.route("/")
