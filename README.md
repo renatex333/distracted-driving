@@ -1,6 +1,77 @@
-# distracted-driving
+# distracted-driving [EN-US]
 
-Projeto por: Pedro Altobelli, Renato Laffranchi e Vinicius Morales
+Project by: Pedro Altobelli Teixeira Pinto, Renato Laffranchi Falcão, and Vinicius Matheus Morales
+
+## Project Overview
+
+An application to identify when the driver is distracted and provide real-time warnings to help them stay focused on driving.
+
+### Types of Distractions to be Monitored
+
+- Eyes closed: high-intensity alarm
+- Head down / Indicative of falling asleep at the wheel: low-intensity alarm 
+- Using a cellphone: intermittent sound warning
+- Talking on the phone: intermittent sound warning
+- Trying to reach something in the back seat: single sound warning, increasing if the attempt continues
+- Adjusting the radio: single sound warning
+- Yawning: a distinct sound warning from the others, to be associated with a rest break. A text indication can also be provided
+- Eating: visual alert, screen flashing
+
+### Final Objective
+
+- Web application, but close to real-time.
+- Progressive warning system.
+- Mobile demo, with server deployment.
+- Cover all types of distraction listed above.
+
+## Environment Setup (local development and testing)
+
+    python3 -m venv env
+
+To activate the virtual environment, run the command:
+
+    # Linux
+    source env/bin/activate
+    # Windows
+    env/Scripts/activate
+
+To deactivate the virtual environment, run the command:
+
+    deactivate
+
+## Installing Dependencies
+
+    pip install --upgrade pip
+    pip install -r requirements.txt
+
+If there are problems installing `requirements.txt`, install the dependencies manually:
+
+    pip install flask flask-sock opencv-python ultralytics
+
+
+## Run Demo
+
+    flask --app app/distracted-driving.py run
+
+## References
+
+Sam Ansari. (2022). [How to Train YOLO Model to Detect Distracted Drivers](https://ansarisam.medium.com/how-to-train-yolo-v5-model-to-detect-distracted-drivers-ac62b2d44a27).
+
+Yacine Rouizi. (2023). [Real-time Object Tracking with OpenCV and YOLOv8 in Python](https://thepythoncode.com/article/real-time-object-tracking-with-yolov8-opencv).
+
+Ultralytics. (2023). [YoloV8 Docs](https://docs.ultralytics.com/).
+
+Vercel. [Flask Hello World](https://vercel.com/templates/python/flask-hello-world).
+
+Vercel. [Django Hello World](https://vercel.com/templates/python/django-hello-world).
+
+Mozilla, MDN Web Docs. (2023). [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
+
+Ipylot project, Roboflow Universe. (2022). [Distracted Driving Dataset](https://universe.roboflow.com/ipylot-project/distracted-driving-v2wk5).
+
+# distracted-driving [PT-BR]
+
+Projeto por: Pedro Altobelli Teixeira Pinto, Renato Laffranchi Falcão, e Vinicius Matheus Morales
 
 ## Objetivo do Projeto
 
@@ -21,37 +92,10 @@ Aplicativo para identificar quando o motorista está distraído e fornecer aviso
 
 - Aplicativo web, mas em algo próximo de tempo real.
 - Sistema de avisos progressivo.
-- Demo no celular, com deploy no servidor.
-- Cobrir todos os tipos de distracao do YOLO.
+- Demo no celular, com deploy em servidor.
+- Cobrir todos os tipos de distração listados acima.
 
-### Entrega via email até 08/12
-
-- Link do repositório.
-- Instruções para rodar demonstração local.
-- Link da demonstração online.
-- Descrição do processo de atualização.
-
-## Rubricas
-
-### Conceito C
-
-- Versão web, mesmo que rodando localmente.
-- Webcam ao vivo, mesmo que com FPS baixo.
-- Exibição em tempo real de todas as informações.
-- Implementação modular de todos os alertas.
-- Envio de informações em alto nível do servidor.
-
-### Conceito B
-
-- Deploy de versão online com acesso público.
-- Facilidade de atualização, mesmo que não seja um CD.
-
-### Conceito A
-
-- Acabamento profissional.
-- Configuração completa dos alertas.
-
-## Setup do ambiente
+## Setup do ambiente (desenvolvimento e teste local)
 
     python3 -m venv env
 
@@ -62,25 +106,23 @@ Para ativar o ambiente virtual basta rodar o comando:
     # Windows
     env/Scripts/activate
 
+Para desativar o ambiente virtual basta rodar o comando:
+
+    deactivate
+
 ## Instalando dependências
 
     pip install --upgrade pip
     pip install -r requirements.txt
 
-Se der problema para instalar os `requirements.txt`, instale as dependências manualmente:
+Se algum erro de instalação for encontrado ao instalar os `requirements.txt`, as dependências podem ser instaladas manualmente manualmente:
 
     pip install flask flask-sock opencv-python ultralytics
 
 
-## Rodar demo Flask
+## Rodar demo
 
     flask --app app/distracted-driving.py run
-
-## Planilhas 
-
-[Planilha dos grupos](https://docs.google.com/spreadsheets/d/1881UvEfp4QGNdXIWUzFsebN4hCH7xh6pZpvL-mi7xM4/edit#gid=0)
-
-[Planilha das rubricas](https://docs.google.com/spreadsheets/d/1-sJTng3EHL6j4yCbi8HgM0QcyZhv86lO3-wTwadBPj4/edit#gid=0)
 
 ## Referências
 
