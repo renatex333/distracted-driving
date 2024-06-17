@@ -1,88 +1,71 @@
-# distracted-driving
+# Distracted Driving Detection Application
 
-Projeto por: Pedro Altobelli, Renato Laffranchi e Vinicius Morales
+**Contributors:** Pedro Altobelli, Renato Laffranchi, Vinicius Morales
 
-## Objetivo do Projeto
+## Project Overview
 
-Aplicativo para identificar quando o motorista está distraído e fornecer avisos em tempo real que o ajude a se manter focado na direção.
+This project aims to develop an innovative application designed to identify driver distractions and provide real-time alerts, thereby enhancing road safety and reducing the risk of accidents.
 
-### Tipos de distrações que serão observadas
+### Key Features
 
-- Olhos fechados: alarme de alta intensidade
-- Cabeça caída / Indicativo de que dormiu na direção: alarme de baixa intensidade 
-- Mexer no celular: aviso sonoro intermitente
-- Falar no celular: aviso sonoro intermitente
-- Tentar alcançar algo no banco de trás: aviso sonoro único, mas aumenta se continuar tentando alcançar
-- Mexer no rádio: aviso sonoro único
-- Bocejo: aviso sonoro distinto dos outros, para ser associado com uma pausa para descanso. Uma indicação em texto também pode ser fornecida
-- Se alimentar: alerta visual, piscar tela
+- **Closed Eyes Detection:** High-intensity alarm to alert the driver.
+- **Head Dropping / Drowsiness Detection:** Low-intensity alarm to prevent microsleep.
+- **Mobile Phone Use Detection:** Intermittent audio alerts for both handling and talking on the phone.
+- **Reaching for Objects:** Progressive audio alerts to discourage reaching for items in the back seat.
+- **Radio Adjustment:** Single audio alert to minimize distractions.
+- **Yawning Detection:** Distinct audio alert with a suggestion to take a break.
+- **Eating Detection:** Visual alert through screen flashing to remind the driver to stay focused.
 
-### Objetivo final
+### Final Deliverables
 
-- Aplicativo web, mas em algo próximo de tempo real.
-- Sistema de avisos progressivo.
-- Demo no celular, com deploy no servidor.
-- Cobrir todos os tipos de distracao do YOLO.
+- A near real-time web application.
+- A progressive alert system to handle various types of distractions.
+- Mobile demonstration with server deployment.
+- Comprehensive coverage of distraction types identified by YOLO.
 
-### Entrega via email até 08/12
+## Environment Setup
 
-- Link do repositório.
-- Instruções para rodar demonstração local.
-- Link da demonstração online.
-- Descrição do processo de atualização.
+To set up the development environment, create a virtual environment:
 
-## Rubricas
+```sh
+python3 -m venv env
+```
 
-### Conceito C
+Activate the virtual environment:
 
-- Versão web, mesmo que rodando localmente.
-- Webcam ao vivo, mesmo que com FPS baixo.
-- Exibição em tempo real de todas as informações.
-- Implementação modular de todos os alertas.
-- Envio de informações em alto nível do servidor.
+```sh
+# Linux
+source env/bin/activate
+# Windows
+env/Scripts/activate
+```
 
-### Conceito B
+## Installing Dependencies
 
-- Deploy de versão online com acesso público.
-- Facilidade de atualização, mesmo que não seja um CD.
+Upgrade pip and install the required dependencies:
 
-### Conceito A
+```sh
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-- Acabamento profissional.
-- Configuração completa dos alertas.
+If issues arise with `requirements.txt`, manually install dependencies:
 
-## Setup do ambiente
+```sh
+pip install flask flask-sock opencv-python ultralytics
+```
 
-    python3 -m venv env
+## Running the Flask Application
 
-Para ativar o ambiente virtual basta rodar o comando:
+To start the Flask demo application, execute:
 
-    # Linux
-    source env/bin/activate
-    # Windows
-    env/Scripts/activate
+```sh
+flask --app app/distracted-driving.py run
+```
 
-## Instalando dependências
+This project represents a cutting-edge solution in the field of driver safety, leveraging advanced detection algorithms to mitigate the risks associated with distracted driving. Our goal is to deliver a reliable, user-friendly application that can be seamlessly integrated into everyday use, contributing to safer roads and more attentive drivers.
 
-    pip install --upgrade pip
-    pip install -r requirements.txt
-
-Se der problema para instalar os `requirements.txt`, instale as dependências manualmente:
-
-    pip install flask flask-sock opencv-python ultralytics
-
-
-## Rodar demo Flask
-
-    flask --app app/distracted-driving.py run
-
-## Planilhas 
-
-[Planilha dos grupos](https://docs.google.com/spreadsheets/d/1881UvEfp4QGNdXIWUzFsebN4hCH7xh6pZpvL-mi7xM4/edit#gid=0)
-
-[Planilha das rubricas](https://docs.google.com/spreadsheets/d/1-sJTng3EHL6j4yCbi8HgM0QcyZhv86lO3-wTwadBPj4/edit#gid=0)
-
-## Referências
+## References
 
 Sam Ansari. (2022). [How to Train YOLO Model to Detect Distracted Drivers](https://ansarisam.medium.com/how-to-train-yolo-v5-model-to-detect-distracted-drivers-ac62b2d44a27).
 
